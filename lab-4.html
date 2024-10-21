@@ -4538,7 +4538,8 @@ window.Quarto = {
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Necessary libraries</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glue)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="chi-square-distribution" class="level2">
 <h2 class="anchored" data-anchor-id="chi-square-distribution">Chi-Square Distribution</h2>
@@ -4606,25 +4607,23 @@ window.Quarto = {
 <section id="chi-square-distribution-plot" class="level3">
 <h3 class="anchored" data-anchor-id="chi-square-distribution-plot">Chi-Square Distribution Plot</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create data for chi-square PDF</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">40</span>, <span class="at">by  =</span> <span class="fl">0.1</span>)</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>df5 <span class="ot">&lt;-</span> <span class="fu">dchisq</span>(x, <span class="at">df =</span> <span class="dv">5</span>)</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>df10 <span class="ot">&lt;-</span> <span class="fu">dchisq</span>(x, <span class="at">df =</span> <span class="dv">10</span>)</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>df20 <span class="ot">&lt;-</span> <span class="fu">dchisq</span>(x, <span class="at">df =</span> <span class="dv">20</span>)</span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>chi_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">rep</span>(x, <span class="dv">3</span>),</span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">density =</span> <span class="fu">c</span>(df5, df10, df20),</span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">df =</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">20</span>), <span class="at">each =</span> <span class="fu">length</span>(x)))</span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(chi_data, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> density, <span class="at">color =</span> df)) <span class="sc">+</span></span>
-<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Chi-Square Distribution&quot;</span>, <span class="at">x =</span> <span class="st">&quot;x&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Density&quot;</span>) <span class="sc">+</span></span>
-<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> </span>
-<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;x value&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Density&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create data for chi-square PDF</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">40</span>, <span class="at">by  =</span> <span class="fl">0.1</span>)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>df5 <span class="ot">&lt;-</span> <span class="fu">dchisq</span>(x, <span class="at">df =</span> <span class="dv">5</span>)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>df10 <span class="ot">&lt;-</span> <span class="fu">dchisq</span>(x, <span class="at">df =</span> <span class="dv">10</span>)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>df20 <span class="ot">&lt;-</span> <span class="fu">dchisq</span>(x, <span class="at">df =</span> <span class="dv">20</span>)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>chi_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">rep</span>(x, <span class="dv">3</span>),</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">density =</span> <span class="fu">c</span>(df5, df10, df20),</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">df =</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">20</span>), <span class="at">each =</span> <span class="fu">length</span>(x)))</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(chi_data, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> density, <span class="at">color =</span> df)) <span class="sc">+</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Chi-Square Distribution&quot;</span>, <span class="at">x =</span> <span class="st">&quot;x&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Density&quot;</span>) <span class="sc">+</span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> </span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;x value&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Density&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -4716,15 +4715,17 @@ window.Quarto = {
 <span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>lwr <span class="ot">&lt;-</span> (n <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> var_sbp <span class="sc">/</span> <span class="fu">qchisq</span>(<span class="dv">1</span> <span class="sc">-</span> alpha<span class="sc">/</span><span class="dv">2</span>, <span class="at">df =</span> n <span class="sc">-</span> <span class="dv">1</span>)</span>
 <span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>upr <span class="ot">&lt;-</span> (n <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> var_sbp <span class="sc">/</span> <span class="fu">qchisq</span>(alpha<span class="sc">/</span><span class="dv">2</span>, <span class="at">df =</span> n <span class="sc">-</span> <span class="dv">1</span>)</span>
 <span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="co"># this is an R package I developed to make presentation of results</span></span>
-<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a><span class="co"># a little easier. You can splice R objects into text using {}, </span></span>
-<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a><span class="co"># and the result will be rounded automatically based on the magnitude</span></span>
-<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a><span class="co"># of the values.</span></span>
-<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(table.glue)</span>
-<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a><span class="fu">table_glue</span>(<span class="st">&quot;the variance (95% CI) of SBP is {var_sbp} ({lwr}, {upr})&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="co"># R has a package called glue that lets you splice R objects </span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a><span class="co"># into text using {}. It&#39;s very convenient for point and </span></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a><span class="co"># interval summaries</span></span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>var_sbp <span class="ot">&lt;-</span> <span class="fu">round</span>(var_sbp, <span class="at">digits =</span> <span class="dv">0</span>)</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>lwr <span class="ot">&lt;-</span> <span class="fu">round</span>(lwr, <span class="at">digits =</span> <span class="dv">0</span>)</span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>upr <span class="ot">&lt;-</span> <span class="fu">round</span>(upr, <span class="at">digits =</span> <span class="dv">0</span>)</span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a><span class="fu">glue</span>(<span class="st">&quot;the variance (95% CI) of SBP is {var_sbp} ({lwr}, {upr})&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] &quot;the variance (95% CI) of SBP is 130 (100, 175)&quot;</code></pre>
+<pre><code>the variance (95% CI) of SBP is 130 (100, 175)</code></pre>
 </div>
 </div>
 <p>Now suppose we want to estimate the proportion of mothers of low birthweight infants who have a toxemia diagnosis during pregnancy. You can get both the point estimate and confidence interval from <code>binom.test</code>.</p>
@@ -4752,11 +4753,13 @@ attr(,&quot;conf.level&quot;)
 </div>
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># but whoever reviews your work will appreciate a nicely formatted answer.</span></span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(tox_result,</span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>     <span class="fu">table_glue</span>(<span class="st">&quot;The proportion (95% CI) is </span><span class="sc">\\</span></span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="st">                {estimate} ({conf.int[1]}, {conf.int[2]})&quot;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>est <span class="ot">&lt;-</span> <span class="fu">round</span>(tox_result<span class="sc">$</span>estimate, <span class="at">digits =</span> <span class="dv">2</span>)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>lwr <span class="ot">&lt;-</span> <span class="fu">round</span>(tox_result<span class="sc">$</span>conf.int[<span class="dv">1</span>], <span class="at">digits =</span> <span class="dv">2</span>)</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>upr <span class="ot">&lt;-</span> <span class="fu">round</span>(tox_result<span class="sc">$</span>conf.int[<span class="dv">2</span>], <span class="at">digits =</span> <span class="dv">2</span>)</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="fu">glue</span>(<span class="st">&quot;The proportion (95% CI) is {est} ({lwr}, {upr})&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] &quot;The proportion (95% CI) is 0.21 (0.13, 0.30)&quot;</code></pre>
+<pre><code>The proportion (95% CI) is 0.21 (0.13, 0.3)</code></pre>
 </div>
 </div>
 </section>
@@ -4853,57 +4856,56 @@ mean of x
 attr(,&quot;conf.level&quot;)
 [1] 0.95</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># formatting is easy</span></span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(</span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  t_test_sbp,</span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">table_glue</span>(<span class="st">&quot;Mean SBP is {estimate} (95% CI: {conf.int[1]}, {conf.int[2]})&quot;</span>)</span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>est <span class="ot">&lt;-</span> <span class="fu">round</span>(t_test_sbp<span class="sc">$</span>estimate, <span class="at">digits =</span> <span class="dv">0</span>)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>lwr <span class="ot">&lt;-</span> <span class="fu">round</span>(t_test_sbp<span class="sc">$</span>conf.int[<span class="dv">1</span>], <span class="at">digits =</span> <span class="dv">0</span>)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>upr <span class="ot">&lt;-</span> <span class="fu">round</span>(t_test_sbp<span class="sc">$</span>conf.int[<span class="dv">2</span>], <span class="at">digits =</span> <span class="dv">0</span>)</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="fu">glue</span>(<span class="st">&quot;Mean SBP is {est} (95% CI: {lwr}, {upr})&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] &quot;Mean SBP is 47 (95% CI: 45, 49)&quot;</code></pre>
+<pre><code>Mean SBP is 47 (95% CI: 45, 49)</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># p-value from null hypothesis of mu = 70</span></span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>t_test_sbp<span class="sc">$</span>p.value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1.014499e-36</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># formatted:</span></span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table_pvalue</span>(t_test_sbp<span class="sc">$</span>p.value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] &quot;&lt;.001&quot;</code></pre>
-</div>
 </div>
 <p>Suppose that 5% of mothers experience toxemia during pregnancy in the general population. Is the proportion of mothers of low birthweight infants who experience toxemia different than the general population?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>tox_result <span class="ot">&lt;-</span> <span class="fu">binom.test</span>(n_tox, <span class="at">n =</span> n, <span class="at">conf.level =</span> <span class="fl">0.95</span>, <span class="at">p =</span> <span class="fl">0.05</span>)</span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="co"># raw results</span></span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>tox_result<span class="sc">$</span>estimate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>tox_result <span class="ot">&lt;-</span> <span class="fu">binom.test</span>(n_tox, <span class="at">n =</span> n, <span class="at">conf.level =</span> <span class="fl">0.95</span>, <span class="at">p =</span> <span class="fl">0.05</span>)</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="co"># raw results</span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>tox_result<span class="sc">$</span>estimate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>probability of success 
                   0.21 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>tox_result<span class="sc">$</span>conf.int</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>tox_result<span class="sc">$</span>conf.int</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.1349437 0.3029154
 attr(,&quot;conf.level&quot;)
 [1] 0.95</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>tox_result<span class="sc">$</span>p.value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>tox_result<span class="sc">$</span>p.value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2.081061e-08</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># formatted</span></span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(</span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>  tox_result,</span>
-<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">table_glue</span>(</span>
-<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;The estimated proportion of mothers with toxemia during </span><span class="sc">\\</span></span>
-<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a><span class="st">     pregnancy was {estimate} (95% CI: {conf.int[1]}, {conf.int[2]}). </span><span class="sc">\\</span></span>
-<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a><span class="st">     Testing whether the estimate is equal to 0.05 yields a p-value </span><span class="sc">\\</span></span>
-<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a><span class="st">     of {table_pvalue(p.value)}&quot;</span>)</span>
-<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># formatted</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>est <span class="ot">&lt;-</span> <span class="fu">round</span>(tox_result<span class="sc">$</span>estimate, <span class="at">digits =</span> <span class="dv">2</span>)</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>lwr <span class="ot">&lt;-</span> <span class="fu">round</span>(tox_result<span class="sc">$</span>conf.int[<span class="dv">1</span>], <span class="at">digits =</span> <span class="dv">2</span>)</span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>upr <span class="ot">&lt;-</span> <span class="fu">round</span>(tox_result<span class="sc">$</span>conf.int[<span class="dv">2</span>], <span class="at">digits =</span> <span class="dv">2</span>)</span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a><span class="fu">glue</span>(</span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;The estimated proportion of mothers with toxemia during </span><span class="sc">\\</span></span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a><span class="st">     pregnancy was {est} (95% CI: {lwr}, {upr}). </span><span class="sc">\\</span></span>
+<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a><span class="st">     Testing whether the estimate is equal to 0.05 yields a p-value </span><span class="sc">\\</span></span>
+<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a><span class="st">     of &lt;0.001&quot;</span></span>
+<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] &quot;The estimated proportion of mothers with toxemia during pregnancy was 0.21 (95% CI: 0.13, 0.30). Testing whether the estimate is equal to 0.05 yields a p-value of &lt;.001&quot;</code></pre>
+<pre><code>The estimated proportion of mothers with toxemia during pregnancy was 0.21 (95% CI: 0.13, 0.3). Testing whether the estimate is equal to 0.05 yields a p-value of &lt;0.001</code></pre>
 </div>
 </div>
 </section>
@@ -4953,9 +4955,9 @@ attr(,&quot;conf.level&quot;)
 </table>
 <p>The degree of clinical agreement among physicians on the presence or absence of generalized lymphadenopathy was assessed in 32 randomly selected participants from a prospective study of male sexual contacts of men with acquired immunodeficiency syndrome (AIDS) or an AIDS-related condition (ARC). The total number of palpable lymph nodes was assessed by each of three physicians. Results from two of the three physicians are presented in <code>lymph_nodes.xlsx</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>lymph_nodes <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(<span class="st">&quot;data/lymph_nodes.xlsx&quot;</span>)</span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>lymph_nodes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>lymph_nodes <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(<span class="st">&quot;data/lymph_nodes.xlsx&quot;</span>)</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>lymph_nodes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div data-pagedtable="false">
   <script data-pagedtable-source type="application/json">
@@ -4964,33 +4966,60 @@ attr(,&quot;conf.level&quot;)
 </div>
 </div>
 </div>
-<p>The data set has the following variables: - <code>ID</code> = patient ID - <code>DocA</code> = number of palpable lymph nodes found by Doctor A - <code>DocB</code> = number of palpable lymph nodes found by Doctor B - <code>Diff</code> = DocA - DocB</p>
+<p>The data set has the following variables:</p>
+<ul>
+<li><p><code>ID</code> = patient ID</p></li>
+<li><p><code>DocA</code> = number of palpable lymph nodes found by Doctor A</p></li>
+<li><p><code>DocB</code> = number of palpable lymph nodes found by Doctor B</p></li>
+<li><p><code>Diff</code> = DocA - DocB</p></li>
+</ul>
 <p>Is there a difference between the assessments of Doctor A vs. Doctor B? Assume the sample size is large enough to rely on the CLT.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>t_test_diff <span class="ot">&lt;-</span> <span class="fu">t.test</span>(lymph_nodes<span class="sc">$</span>Diff)</span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="co"># note: this is equivalent to:</span></span>
-<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>t_test_diff <span class="ot">&lt;-</span> <span class="fu">t.test</span>(<span class="at">x =</span> lymph_nodes<span class="sc">$</span>DocA, </span>
-<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>                      <span class="at">y =</span> lymph_nodes<span class="sc">$</span>DocB, </span>
-<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>                      <span class="at">paired =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(</span>
-<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a>  t_test_diff,</span>
-<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">table_glue</span>(<span class="st">&quot;Mean difference is {estimate} </span><span class="sc">\\</span></span>
-<span id="cb50-11"><a href="#cb50-11" aria-hidden="true" tabindex="-1"></a><span class="st">             (95% CI: {conf.int[1]}, {conf.int[2]})&quot;</span>)</span>
-<span id="cb50-12"><a href="#cb50-12" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>t_test_diff <span class="ot">&lt;-</span> <span class="fu">t.test</span>(lymph_nodes<span class="sc">$</span>Diff)</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="co"># note: this is equivalent to:</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>t_test_diff <span class="ot">&lt;-</span> <span class="fu">t.test</span>(<span class="at">x =</span> lymph_nodes<span class="sc">$</span>DocA, </span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>                      <span class="at">y =</span> lymph_nodes<span class="sc">$</span>DocB, </span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>                      <span class="at">paired =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>t_test_diff</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] &quot;Mean difference is 2.8 (95% CI: 1.7, 3.8)&quot;</code></pre>
+<pre><code>
+    Paired t-test
+
+data:  lymph_nodes$DocA and lymph_nodes$DocB
+t = 5.5, df = 31, p-value = 5.12e-06
+alternative hypothesis: true mean difference is not equal to 0
+95 percent confidence interval:
+ 1.730243 3.769757
+sample estimates:
+mean difference 
+           2.75 </code></pre>
 </div>
 </div>
 <p>Returning back to the <code>lowbwt</code> data set, suppose we want to know if SBP differs between males and females.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>t_test_sbp_by_sex <span class="ot">&lt;-</span> <span class="fu">with</span>(</span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  lowbwt,</span>
-<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">t.test</span>(<span class="at">x =</span> sbp[sex <span class="sc">==</span> <span class="dv">1</span>],</span>
-<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">y =</span> sbp[sex <span class="sc">==</span> <span class="dv">0</span>], </span>
-<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">paired =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>t_test_sbp_by_sex <span class="ot">&lt;-</span> <span class="fu">with</span>(</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  lowbwt,</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">t.test</span>(<span class="at">x =</span> sbp[sex <span class="sc">==</span> <span class="dv">1</span>],</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">y =</span> sbp[sex <span class="sc">==</span> <span class="dv">0</span>], </span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">paired =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a>t_test_sbp_by_sex</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Welch Two Sample t-test
+
+data:  sbp[sex == 1] and sbp[sex == 0]
+t = 0.60298, df = 89.858, p-value = 0.548
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -3.211290  6.009991
+sample estimates:
+mean of x mean of y 
+ 47.86364  46.46429 </code></pre>
+</div>
 </div>
 </section>
 </section>
@@ -5004,44 +5033,52 @@ attr(,&quot;conf.level&quot;)
 <li>Provide a point estimate and 95% confidence interval.</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># don&#39;t bother with approximations if it&#39;s trivial to do the exact test.</span></span>
-<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>binom_test <span class="ot">&lt;-</span> <span class="fu">binom.test</span>(<span class="at">x =</span> <span class="fu">sum</span>(lowbwt<span class="sc">$</span>sex<span class="sc">==</span><span class="dv">0</span>), <span class="at">n =</span> <span class="fu">nrow</span>(lowbwt))</span>
-<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(</span>
-<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>  binom_test,</span>
-<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">table_glue</span>(<span class="st">&quot;the estimated proportion who are women is </span><span class="sc">\\</span></span>
-<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a><span class="st">             {estimate} (95% CI: {conf.int[1]}, {conf.int[2]})&quot;</span>)</span>
-<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># don&#39;t bother with approximations if it&#39;s trivial to do the exact test.</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>binom_test <span class="ot">&lt;-</span> <span class="fu">binom.test</span>(<span class="at">x =</span> <span class="fu">sum</span>(lowbwt<span class="sc">$</span>sex<span class="sc">==</span><span class="dv">0</span>), <span class="at">n =</span> <span class="fu">nrow</span>(lowbwt))</span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>binom_test</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] &quot;the estimated proportion who are women is 0.56 (95% CI: 0.46, 0.66)&quot;</code></pre>
+<pre><code>
+    Exact binomial test
+
+data:  sum(lowbwt$sex == 0) and nrow(lowbwt)
+number of successes = 56, number of trials = 100, p-value = 0.2713
+alternative hypothesis: true probability of success is not equal to 0.5
+95 percent confidence interval:
+ 0.4571875 0.6591640
+sample estimates:
+probability of success 
+                  0.56 </code></pre>
 </div>
 </div>
 <ol start="2" type="a">
 <li>Assume that in the general population, 50% of infants are female. Is the proportion of female infants different for the low birthweight population? Use a hypothesis test to answer this question.</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Don&#39;t use an approximation if it&#39;s easy to do an exact test.</span></span>
-<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>binom_test <span class="ot">&lt;-</span> <span class="fu">binom.test</span>(<span class="at">x =</span> <span class="fu">sum</span>(lowbwt<span class="sc">$</span>sex<span class="sc">==</span><span class="dv">0</span>), <span class="at">n =</span> <span class="fu">nrow</span>(lowbwt), <span class="at">p =</span> <span class="fl">0.50</span>)</span>
-<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>binom_test<span class="sc">$</span>p.value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co"># exact test</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>binom_test <span class="ot">&lt;-</span> <span class="fu">binom.test</span>(<span class="at">x =</span> <span class="fu">sum</span>(lowbwt<span class="sc">$</span>sex<span class="sc">==</span><span class="dv">0</span>), <span class="at">n =</span> <span class="fu">nrow</span>(lowbwt), <span class="at">p =</span> <span class="fl">0.50</span>)</span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>binom_test<span class="sc">$</span>p.value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.271253</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co"># what if we had done an approximation?</span></span>
-<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">mean</span>(lowbwt<span class="sc">$</span>sex <span class="sc">==</span> <span class="dv">0</span>)</span>
-<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(lowbwt)</span>
-<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> n <span class="sc">*</span> p</span>
-<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(n <span class="sc">*</span> p <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> p))</span>
-<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> (mu <span class="sc">-</span> <span class="dv">50</span>) <span class="sc">/</span> sigma</span>
-<span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-11"><a href="#cb57-11" aria-hidden="true" tabindex="-1"></a>pval <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">pnorm</span>(z, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb57-12"><a href="#cb57-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-13"><a href="#cb57-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Approximation is pretty off here. Another good reason not to do it.</span></span>
-<span id="cb57-14"><a href="#cb57-14" aria-hidden="true" tabindex="-1"></a>pval</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co"># approximation</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">mean</span>(lowbwt<span class="sc">$</span>sex <span class="sc">==</span> <span class="dv">0</span>)</span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(lowbwt)</span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> n <span class="sc">*</span> p</span>
+<span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-8"><a href="#cb56-8" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(n <span class="sc">*</span> p <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> p))</span>
+<span id="cb56-9"><a href="#cb56-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-10"><a href="#cb56-10" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> (mu <span class="sc">-</span> <span class="dv">50</span>) <span class="sc">/</span> sigma</span>
+<span id="cb56-11"><a href="#cb56-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-12"><a href="#cb56-12" aria-hidden="true" tabindex="-1"></a>pval <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">pnorm</span>(z, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb56-13"><a href="#cb56-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-14"><a href="#cb56-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Approximation is pretty off here. Another good reason not to do it.</span></span>
+<span id="cb56-15"><a href="#cb56-15" aria-hidden="true" tabindex="-1"></a>pval</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.2267649</code></pre>
 </div>
@@ -5050,34 +5087,34 @@ attr(,&quot;conf.level&quot;)
 <li>Does mean SBP differ between infants whose mothers had toxemia during pregnancy and infants whose mothers did not have toxemia? Assume SBP is normally distributed. Use a hypothesis test to answer this question. Also report the 95% confidence interval that corresponds to the test.</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>variances <span class="ot">&lt;-</span> lowbwt <span class="sc">%&gt;%</span> </span>
-<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(tox) <span class="sc">%&gt;%</span> </span>
-<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">s2 =</span> <span class="fu">var</span>(sbp), <span class="at">df =</span> <span class="fu">n</span>() <span class="sc">-</span> <span class="dv">1</span>)</span>
-<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>fstat <span class="ot">&lt;-</span> variances<span class="sc">$</span>s2[<span class="dv">1</span>] <span class="sc">/</span> variances<span class="sc">$</span>s2[<span class="dv">2</span>]</span>
-<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a><span class="co"># fstat is &gt;1 so pvalue is 2 * area to the right of fstat</span></span>
-<span id="cb59-8"><a href="#cb59-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb59-9"><a href="#cb59-9" aria-hidden="true" tabindex="-1"></a>pval_equal_variance <span class="ot">&lt;-</span>  <span class="dv">2</span> <span class="sc">*</span> <span class="fu">pf</span>(<span class="at">q =</span> fstat, </span>
-<span id="cb59-10"><a href="#cb59-10" aria-hidden="true" tabindex="-1"></a>                               <span class="at">df1 =</span> variances<span class="sc">$</span>df[<span class="dv">1</span>], </span>
-<span id="cb59-11"><a href="#cb59-11" aria-hidden="true" tabindex="-1"></a>                               <span class="at">df2 =</span> variances<span class="sc">$</span>df[<span class="dv">2</span>], </span>
-<span id="cb59-12"><a href="#cb59-12" aria-hidden="true" tabindex="-1"></a>                               <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb59-13"><a href="#cb59-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb59-14"><a href="#cb59-14" aria-hidden="true" tabindex="-1"></a><span class="co"># not enough evidence to conclude variances are not equal</span></span>
-<span id="cb59-15"><a href="#cb59-15" aria-hidden="true" tabindex="-1"></a><span class="co"># (note: this is sort of arbitrary - is this sample large enough</span></span>
-<span id="cb59-16"><a href="#cb59-16" aria-hidden="true" tabindex="-1"></a><span class="co">#  to detect differences in variance??)</span></span>
-<span id="cb59-17"><a href="#cb59-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb59-18"><a href="#cb59-18" aria-hidden="true" tabindex="-1"></a><span class="co"># carry out the t-test with equal variances</span></span>
-<span id="cb59-19"><a href="#cb59-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb59-20"><a href="#cb59-20" aria-hidden="true" tabindex="-1"></a>t_test_sbp_tox <span class="ot">&lt;-</span> <span class="fu">with</span>(</span>
-<span id="cb59-21"><a href="#cb59-21" aria-hidden="true" tabindex="-1"></a>  lowbwt,</span>
-<span id="cb59-22"><a href="#cb59-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">t.test</span>(<span class="at">x =</span> sbp[tox <span class="sc">==</span> <span class="dv">1</span>],</span>
-<span id="cb59-23"><a href="#cb59-23" aria-hidden="true" tabindex="-1"></a>         <span class="at">y =</span> sbp[tox <span class="sc">==</span> <span class="dv">0</span>], </span>
-<span id="cb59-24"><a href="#cb59-24" aria-hidden="true" tabindex="-1"></a>         <span class="at">paired =</span> <span class="cn">FALSE</span>,   <span class="co"># two sample test</span></span>
-<span id="cb59-25"><a href="#cb59-25" aria-hidden="true" tabindex="-1"></a>         <span class="at">var.equal =</span> <span class="cn">TRUE</span>) <span class="co"># equal variances</span></span>
-<span id="cb59-26"><a href="#cb59-26" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb59-27"><a href="#cb59-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb59-28"><a href="#cb59-28" aria-hidden="true" tabindex="-1"></a>t_test_sbp_tox</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>variances <span class="ot">&lt;-</span> lowbwt <span class="sc">%&gt;%</span> </span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(tox) <span class="sc">%&gt;%</span> </span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">s2 =</span> <span class="fu">var</span>(sbp), <span class="at">df =</span> <span class="fu">n</span>() <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>fstat <span class="ot">&lt;-</span> variances<span class="sc">$</span>s2[<span class="dv">1</span>] <span class="sc">/</span> variances<span class="sc">$</span>s2[<span class="dv">2</span>]</span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a><span class="co"># fstat is &gt;1 so pvalue is 2 * area to the right of fstat</span></span>
+<span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-9"><a href="#cb58-9" aria-hidden="true" tabindex="-1"></a>pval_equal_variance <span class="ot">&lt;-</span>  <span class="dv">2</span> <span class="sc">*</span> <span class="fu">pf</span>(<span class="at">q =</span> fstat, </span>
+<span id="cb58-10"><a href="#cb58-10" aria-hidden="true" tabindex="-1"></a>                               <span class="at">df1 =</span> variances<span class="sc">$</span>df[<span class="dv">1</span>], </span>
+<span id="cb58-11"><a href="#cb58-11" aria-hidden="true" tabindex="-1"></a>                               <span class="at">df2 =</span> variances<span class="sc">$</span>df[<span class="dv">2</span>], </span>
+<span id="cb58-12"><a href="#cb58-12" aria-hidden="true" tabindex="-1"></a>                               <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb58-13"><a href="#cb58-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-14"><a href="#cb58-14" aria-hidden="true" tabindex="-1"></a><span class="co"># not enough evidence to conclude variances are not equal</span></span>
+<span id="cb58-15"><a href="#cb58-15" aria-hidden="true" tabindex="-1"></a><span class="co"># (note: this is sort of arbitrary - is this sample large enough</span></span>
+<span id="cb58-16"><a href="#cb58-16" aria-hidden="true" tabindex="-1"></a><span class="co">#  to detect differences in variance??)</span></span>
+<span id="cb58-17"><a href="#cb58-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-18"><a href="#cb58-18" aria-hidden="true" tabindex="-1"></a><span class="co"># carry out the t-test with equal variances</span></span>
+<span id="cb58-19"><a href="#cb58-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-20"><a href="#cb58-20" aria-hidden="true" tabindex="-1"></a>t_test_sbp_tox <span class="ot">&lt;-</span> <span class="fu">with</span>(</span>
+<span id="cb58-21"><a href="#cb58-21" aria-hidden="true" tabindex="-1"></a>  lowbwt,</span>
+<span id="cb58-22"><a href="#cb58-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">t.test</span>(<span class="at">x =</span> sbp[tox <span class="sc">==</span> <span class="dv">1</span>],</span>
+<span id="cb58-23"><a href="#cb58-23" aria-hidden="true" tabindex="-1"></a>         <span class="at">y =</span> sbp[tox <span class="sc">==</span> <span class="dv">0</span>], </span>
+<span id="cb58-24"><a href="#cb58-24" aria-hidden="true" tabindex="-1"></a>         <span class="at">paired =</span> <span class="cn">FALSE</span>,   <span class="co"># two sample test</span></span>
+<span id="cb58-25"><a href="#cb58-25" aria-hidden="true" tabindex="-1"></a>         <span class="at">var.equal =</span> <span class="cn">TRUE</span>) <span class="co"># equal variances</span></span>
+<span id="cb58-26"><a href="#cb58-26" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb58-27"><a href="#cb58-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-28"><a href="#cb58-28" aria-hidden="true" tabindex="-1"></a>t_test_sbp_tox</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Two Sample t-test

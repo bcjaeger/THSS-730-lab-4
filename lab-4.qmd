@@ -13,6 +13,7 @@ format:
 # Necessary libraries
 library(tidyverse)
 library(readxl)
+library(glue)
 ```
 
 
@@ -78,8 +79,6 @@ We can use `ggplot2` to plot the PDFs for the chi-square and F distributions for
 ### Chi-Square Distribution Plot
 
 ```{r}
-
-library(ggplot2)
 
 # Create data for chi-square PDF
 x <- seq(0, 40, by  = 0.1)
@@ -186,13 +185,15 @@ alpha <- 0.05
 lwr <- (n - 1) * var_sbp / qchisq(1 - alpha/2, df = n - 1)
 upr <- (n - 1) * var_sbp / qchisq(alpha/2, df = n - 1)
 
-# this is an R package I developed to make presentation of results
-# a little easier. You can splice R objects into text using {}, 
-# and the result will be rounded automatically based on the magnitude
-# of the values.
+# R has a package called glue that lets you splice R objects 
+# into text using {}. It's very convenient for point and 
+# interval summaries
 
-library(table.glue)
-table_glue("the variance (95% CI) of SBP is {var_sbp} ({lwr}, {upr})")
+var_sbp <- round(var_sbp, digits = 0)
+lwr <- round(lwr, digits = 0)
+upr <- round(upr, digits = 0)
+
+glue("the variance (95% CI) of SBP is {var_sbp} ({lwr}, {upr})")
 
 ```
 
@@ -216,9 +217,12 @@ tox_result$conf.int
 
 # but whoever reviews your work will appreciate a nicely formatted answer.
 
-with(tox_result,
-     table_glue("The proportion (95% CI) is \\
-                {estimate} ({conf.int[1]}, {conf.int[2]})"))
+est <- round(tox_result$estimate, digits = 2)
+lwr <- round(tox_result$conf.int[1], digits = 2)
+upr <- round(tox_result$conf.int[2], digits = 2)
+
+glue("The proportion (95% CI) is {est} ({lwr}, {upr})")
+
 
 ```
 
@@ -266,17 +270,16 @@ t_test_sbp$estimate
 
 t_test_sbp$conf.int
 
-# formatting is easy
-with(
-  t_test_sbp,
-  table_glue("Mean SBP is {estimate} (95% CI: {conf.int[1]}, {conf.int[2]})")
-)
+
+est <- round(t_test_sbp$estimate, digits = 0)
+lwr <- round(t_test_sbp$conf.int[1], digits = 0)
+upr <- round(t_test_sbp$conf.int[2], digits = 0)
+
+glue("Mean SBP is {est} (95% CI: {lwr}, {upr})")
 
 # p-value from null hypothesis of mu = 70
 t_test_sbp$p.value
 
-# formatted:
-table_pvalue(t_test_sbp$p.value)
 
 ```
 
@@ -292,14 +295,19 @@ tox_result$estimate
 tox_result$conf.int
 tox_result$p.value
 
+
 # formatted
-with(
-  tox_result,
-  table_glue(
-    "The estimated proportion of mothers with toxemia during \\
-     pregnancy was {estimate} (95% CI: {conf.int[1]}, {conf.int[2]}). \\
+
+est <- round(tox_result$estimate, digits = 2)
+lwr <- round(tox_result$conf.int[1], digits = 2)
+upr <- round(tox_result$conf.int[2], digits = 2)
+
+
+glue(
+  "The estimated proportion of mothers with toxemia during \\
+     pregnancy was {est} (95% CI: {lwr}, {upr}). \\
      Testing whether the estimate is equal to 0.05 yields a p-value \\
-     of {table_pvalue(p.value)}")
+     of <0.001"
 )
 
 
@@ -329,9 +337,13 @@ lymph_nodes
 ```
 
 The data set has the following variables:
+
 - `ID` = patient ID
+
 - `DocA` = number of palpable lymph nodes found by Doctor A
+
 - `DocB` = number of palpable lymph nodes found by Doctor B
+
 - `Diff` = DocA - DocB
 
 Is there a difference between the assessments of Doctor A vs. Doctor B? Assume the sample size is large enough to rely on the CLT.
@@ -345,11 +357,7 @@ t_test_diff <- t.test(x = lymph_nodes$DocA,
                       y = lymph_nodes$DocB, 
                       paired = TRUE)
 
-with(
-  t_test_diff,
-  table_glue("Mean difference is {estimate} \\
-             (95% CI: {conf.int[1]}, {conf.int[2]})")
-)
+t_test_diff
 
 ```
 
@@ -364,6 +372,8 @@ t_test_sbp_by_sex <- with(
          y = sbp[sex == 0], 
          paired = FALSE)
 )
+
+t_test_sbp_by_sex
 
 ```
 
@@ -383,11 +393,7 @@ a. Provide a point estimate and 95% confidence interval.
 
 binom_test <- binom.test(x = sum(lowbwt$sex==0), n = nrow(lowbwt))
 
-with(
-  binom_test,
-  table_glue("the estimated proportion who are women is \\
-             {estimate} (95% CI: {conf.int[1]}, {conf.int[2]})")
-)
+binom_test
 
 ```
 
@@ -396,12 +402,14 @@ b. Assume that in the general population, 50% of infants are female. Is the prop
 
 ```{r}
 
-# Don't use an approximation if it's easy to do an exact test.
+# exact test
+
 binom_test <- binom.test(x = sum(lowbwt$sex==0), n = nrow(lowbwt), p = 0.50)
 
 binom_test$p.value
 
-# what if we had done an approximation?
+# approximation
+
 p <- mean(lowbwt$sex == 0)
 n <- nrow(lowbwt)
 
